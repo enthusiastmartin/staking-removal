@@ -5,7 +5,7 @@ from hydradxapi import HydraDX
 HYDRA_MAINNET = "wss://hydradx-rpc.dwellir.com"
 LOCAL = "ws://127.0.0.1:8000"
 
-RPC = HYDRA_MAINNET
+RPC = LOCAL
 
 if __name__ == '__main__':
     hydra = HydraDX(RPC)
@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     print("Total staking votes: " + str(len(votes)))
 
-    for vote in votes[:2]:
+    for vote in votes[:50]:
         position_id = vote.position_id
         nft = hydra.api.uniques.asset(2222, position_id)
         for v in vote.votes:
@@ -45,11 +45,7 @@ if __name__ == '__main__':
         call_module="Utility", call_function="batch", call_params={"calls": rv_batch}
     )
 
-    dispatch_call = hydra._client.api.compose_call(
-        call_module="Utility", call_function="dispatch_as", call_params={"as_origin": {"TechnicalCommittee": {"Members": (3,6)}}, "call": call}
-    )
-
-    print(f"{dispatch_call.encode()}")
+    print(f"batch: {call.encode()}")
 
     hydra.close()
 
